@@ -1,0 +1,9 @@
+<h1>Search Results</h1>
+
+<ul>
+  {% for p in object_list %}
+    <li>
+      {{ p.first_name  }}, {{ p.last_name  }}
+    </li>
+  {% endfor %}
+</ul>

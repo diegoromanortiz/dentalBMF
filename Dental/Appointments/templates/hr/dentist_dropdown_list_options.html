@@ -1,0 +1,7 @@
+<optgroup>
+    <option value="">---------</option>
+    {% for d in dentists %}
+    <option value="{{ d.pk }}">{{ d.first_name }}/{{ d.last_name }}</option>
+    {% endfor %}
+</optgroup>
+

@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  {% include "_modal.html" %}
+  <style>
+      
+    body {
+      background-image: url('static/assets/img/logo.jpeg'); /* Ruta de la imagen de fondo */
+      background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+      background-repeat: no-repeat; 
+      background-position: center; /* Centra la imagen en el fondo */
+}
+
+  </style>   
+  <section class="seccion-portada ubicacion-row">
+    <style>
+    
+      section {
+          background-image: url('static/assets/img/AAA.jpeg'); /* Ruta de la imagen de fondo */
+          background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+          background-repeat: no-repeat; 
+          background-position: center; /* Centra la imagen en el fondo */
+    }
+    
+      </style> 
+    <div class="descripcion-portada ubicacion-column">
+        <h2>
+           <br/>
+            <strong class="titulo-principal">Aca puedes elegir tu cita</strong>
+        </h2>
+        <p class="parrafo-portada">
+          Especialistas en implantes dentales,blanqueamiento,limpieza bucal.
+        </p>
+        <a href="#proyectos" class="tab-portada">
+          <button id="create-appointment"  type="button" name="button" class="contacto-nav">
+            
+            <span class="fa fa-plus mr-2">Appointment </span>
+          </button>  
+        </a>
+    </div>
+    <figure class=" ubicacion-row contenedor-imagen"> 
+        <img src="{% static 'assets/img/appoimtment.jpeg'%}" alt="imagen portada" class="img-principal">
+    </figure>
+</section>
+  
+        <div class="row">
+          <div class="col-12 mb-3">
+           
+             {% if perms.DentalAppointments.add_appointment %}
+             <head>
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+              
+              </head>
+            <!--  <script src=  
+              "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">  
+                  </script>  
+                  
+                  <script src=  
+              "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">  
+                  </script>  
+                  
+                  <link href=  
+              "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+                      rel="stylesheet" type="text/css" />--> 
+                      <style>
+                        body {
+                          font-family: Arial;
+                        }
+                        
+                        * {
+                          box-sizing: border-box;
+                        }
+                        
+                        form.example input[type=text] {
+                          padding: 10px;
+                          font-size: 17px;
+                          border: 1px solid grey;
+                          float: left;
+                          width: 80%;
+                          background:  #e8ece4;
+                        }
+                        
+                        form.example button {
+                          float: left;
+                          width: 20%;
+                          padding: 10px;
+                          background: #2196F3;
+                          color: rgb(102, 79, 5);
+                          font-size: 17px;
+                          border: 1px solid grey;
+                          border-left: none;
+                          cursor: pointer;
+                        }
+                        
+                        form.example button:hover {
+                          background: #eff5f0;
+                        }
+                        
+                        form.example::after {
+                          content: "";
+                          clear: both;
+                          display: table;
+                        }
+                        </style>         
+            <form class="example" action="{% url 'searchappointment_results' %}"method="get"  style="margin:auto;max-width:300px">
+              <input type="text" name="q" placeholder="Search for date: yy-mm-dd" name="search2">
+              <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+             {% include "_appointments_table.html" %}
+            
+          </div>
+        </div>
+        
+       
+        <div class="pagination">
+          <span class="step-links">
+              {% if page_obj.has_previous %}
+                  <a href="?page=1">&laquo; first</a>
+                  <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+              {% endif %}
+        
+              <span class="current">
+                  Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+              </span>
+        
+              {% if page_obj.has_next %}
+                  <a href="?page={{ page_obj.next_page_number }}">next</a>
+                  <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+              {% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  {% endif %}
+
+
+{% endblock content %}
+
+{% block extrascripts %}
+  <script type="text/javascript">
+    
+          function createAppointmentModalForm() {
+            $("#create-appointment").modalForm({
+                formURL: "{% url 'create_appointment' %}",
+                modalID: "#create-modal"
+            });
+          }
+          createAppointmentModalForm();
+          var AppointmentFemSuccessMessageUpdate = [
+            "<div ",
+            "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+            "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+            "Success: Appointment was updated.",
+            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+            "<span aria-hidden='true'>&times;</span>",
+            "</button>",
+            "</div>",
+            "<script>",
+            "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+            "<\/script>"
+          ].join("");
+          
+          function updateAppointmentModalForm() {
+            $(".update-appointment").each(function () {
+              $(this).modalForm({
+                formURL: $(this).data("form-url"),
+                asyncUpdate: true,
+                asyncSettings: {
+                  closeOnSubmit: true,
+                  successMessage: AppointmentFemSuccessMessageUpdate,
+                  dataUrl: "appointment/",
+                  dataElementId: "#appointments-table",
+                  dataKey: "table",
+                  addModalFormFunction:reinstantiateModalForms
+                }
+              });
+            });
+          }
+          updateAppointmentModalForm();
+          
+          function deleteAppointmentModalForm() {
+            $(".delete-appointment").each(function () {
+                $(this).modalForm({formURL: $(this).data("form-url"), isDeleteForm: true});
+            });
+          }
+          deleteAppointmentModalForm();
+
+          // Read book buttons
+          function readAppointmentModalForm() {
+            $(".read-appointment").each(function () {
+                $(this).modalForm({formURL: $(this).data("form-url")});
+            });
+          }
+          readAppointmentModalForm() ;
+
+          function reinstantiateModalForms() {
+            deleteAppointmentModalForm();
+            readAppointmentModalForm();
+            updateAppointmentModalForm();
+            createAppointmentModalForm();
+          }
+
+          
+
+          // Hide message
+          $(".alert").fadeTo(2000, 500).slideUp(500, function () {
+              $(".alert").slideUp(500);
+          });
+    
+  </script>
+ <!--<script>
+  // Write on keyup event of keyword input element
+  $(document).ready(function(){
+  $("#search").keyup(function(){
+  _this = this;
+  // Show only matching TR, hide rest of them
+  $.each($("#patients-table tbody tr"), function() {
+  if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
+  $(this).hide();
+  else
+  $(this).show();
+  });
+  });
+ });
+ </script>-->
+ <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ {% if messages %}
+
+    {% for m in messages %}
+       <script>
+         swal.fire({
+           "title":"Congratulations",
+           "text": "{{ m }}",
+           "icon": "Success"
+   
+         });
+       </script>
+     {% endfor %}
+   
+   {% endif %}   
+{% endblock extrascripts %}

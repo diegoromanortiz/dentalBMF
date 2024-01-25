@@ -1,0 +1,98 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+    
+  </style>
+  <head >
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    
+    {% block stylesheets %}
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+      
+      <!-- Font awesome CSS -->
+      <link rel="stylesheet" href="{% static 'assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+      <!-- Custom CSS -->
+      <link rel="stylesheet" href="{% static 'assets/css/jquery.dataTables.min.css'%}"/>
+      <link rel="stylesheet" href="{% static 'assets/css/styleportfolio.css'%}"/>
+      
+    
+      <!-- CSS de Bootstrap -->
+      
+
+<!-- JavaScript de Bootstrap (requiere jQuery) -->
+     
+
+    {% endblock stylesheets %}
+    <title>django-bootstrap-modal-forms</title>
+   
+    
+  </head>
+  
+  <body >
+   
+    <!-- Includes -->
+    {% include "_header.html" %}
+    
+    {% block content %}
+    
+    {% endblock content %}
+
+    <!-- Includes -->
+    {% include "_footer.html" %}
+<!-- JavaScript -->
+{% block scripts %}
+<script src="{% static 'assets/js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+
+<!-- You can alternatively load the minified version -->
+<script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+<script src="{% static 'assets/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'assets/js/jquery.dataTables.min.js'%}"></script>
+
+<!-- jQuery -->
+
+<!--<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>-->
+<!--<script>
+  const table = new DataTable('#example');
+ 
+ table.on('click', 'tbody tr', (e) => {
+     let classList = e.currentTarget.classList;
+  
+     if (classList.contains('selected')) {
+         classList.remove('selected');
+     }
+     else {
+         table.rows('.selected').nodes().each((row) => row.classList.remove('selected'));
+         classList.add('selected');
+     }
+ });
+  
+ document.querySelector('#button').addEventListener('click', function () {
+     table.row('.selected').remove().draw(false);
+ });
+</script>-->
+
+<!--<script type="text/JavaScript">
+$(document).ready(function () {
+  $('#patients-table').DataTable();
+});
+</script>-->
+<!--<script>
+  new DataTable('#example');
+</script>-->
+{% endblock scripts %}
+   
+   
+    {% block extrascripts %}{% endblock extrascripts %}
+
+  </body>
+
+</html>

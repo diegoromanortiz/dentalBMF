@@ -1,0 +1,186 @@
+{% extends  'base.html' %}
+{% load static %}
+{% block content %}
+
+  {% include "_modal.html" %}
+<body >
+  
+  <section class="seccion-portada ubicacion-row">
+    <style>
+    
+      section {
+          background-image: url('static/assets/img/AAA.jpeg'); /* Ruta de la imagen de fondo */
+          background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+          background-repeat: no-repeat; 
+          background-position: center; /* Centra la imagen en el fondo */
+    }
+    
+      </style> 
+    <div class="descripcion-portada ubicacion-column">
+        <h2>
+             <br/>
+            <strong class="titulo-principal">Profesionales a tu servicio y eleccion</strong>
+        </h2>
+        <p class="parrafo-portada">
+          Especialistas en implantes dentales,blanqueamiento,limpieza bucal.
+        </p>
+        {% if perms.DentalDentists.add_dentist %}
+        <a href="#proyectos" class="tab-portada">
+          <button id="create-dentist" class="contacto-nav" type="button" name="button">
+            <span class="fa fa-plus mr-2"></span>Dentist
+          </button>
+        </a>  
+            
+        {% endif %}
+        
+        
+    </div>
+    <figure class=" ubicacion-row contenedor-imagen"> 
+        <img src="{% static 'assets/img/foto-odontologos-sonriendo-2.jpg'%}" alt="imagen portada" class="img-principal">
+    </figure>
+</section>
+        <div class="row">
+          <div class="col-12 mb-3">
+         {% if perms.DentalDentists.add_dentist %}  
+          {% include "_dentists_table.html" %}
+          {% endif %}
+          <div class="contenedor-log-img">
+            
+            <a href="" class="tarjeta-img">
+              
+                <img src="{% static 'assets/img/Katie-PHOTO.jpg'%}"  alt="Imagen ilustrativa portfolio" class="img-proyecto">
+                <h4>Dra Romina Rivarola</h4>
+            </a>
+            <a href="" class="tarjeta-img">
+                <img src="{% static 'assets/img/asiatico.jpeg'%}" alt="Imagen ilustrativa generador memes" class="img-proyecto">
+                <h4>Dr Jhon Jairo Trellez</h4>
+            </a>
+            <a href="" class="tarjeta-img">
+                <img src="{% static 'assets/img/pedro.jpeg'%}" alt="Imagen ilustrativa match 3" class="img-proyecto">
+                <h4>Dr Martin Beron</h4>
+            </a>
+            <a href="" class="tarjeta-img">
+                <img src="{% static 'assets/img/doc.jpeg' %}" alt="Imagen ilustrativa control de gastos" class="img-proyecto">
+                <h4>Dr Diego Beron</h4>
+            </a>
+            <a href="" class="tarjeta-img">
+                <img src="{% static 'assets/img/MEDICO.jpeg' %}" alt="Imagen ilustrativa reuniones" class="img-proyecto">
+                <h4>Dr Marcelo Picco</h4>
+            </a>
+            <a href="" class="tarjeta-img">
+                <img src="{% static 'assets/img/profesional.jpeg' %}"  alt="Imagen ilustrativa todo app" class="img-proyecto">
+                <h4>Dr Gonzalo Sosa</h4>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>  
+{% endblock content %}
+
+{% block extrascripts %}
+  <script type="text/javascript">
+    
+          function createDentistModalForm() {
+            $("#create-dentist").modalForm({
+                formURL: "{% url 'create_dentist' %}",
+                modalID: "#create-modal"
+            });
+          }
+          createDentistModalForm();
+          var DentistFemSuccessMessageUpdate = [
+            "<div ",
+            "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+            "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+            "Success: Dentist was updated.",
+            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+            "<span aria-hidden='true'>&times;</span>",
+            "</button>",
+            "</div>",
+            "<script>",
+            "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+            "<\/script>"
+          ].join("");
+          
+          function updateDentistModalForm() {
+            $(".update-dentist").each(function () {
+              $(this).modalForm({
+                formURL: $(this).data("form-url"),
+                asyncUpdate: true,
+                asyncSettings: {
+                  closeOnSubmit: true,
+                  successMessage: DentistFemSuccessMessageUpdate,
+                  dataUrl: "dentist/",
+                  dataElementId: "#dentists-table",
+                  dataKey: "table",
+                  addModalFormFunction: reinstantiateModalForms
+                }
+              });
+            });
+          }
+          updateDentistModalForm();
+
+          function deleteDentistModalForm() {
+            $(".delete-dentist").each(function () {
+                $(this).modalForm({formURL: $(this).data("form-url"), isDeleteForm: true});
+            });
+          }
+          deleteDentistModalForm();
+
+          // Read book buttons
+          function readDentistModalForm() {
+            $(".read-dentist").each(function () {
+                $(this).modalForm({formURL: $(this).data("form-url")});
+            });
+          }
+          readDentistModalForm() ;
+
+          function reinstantiateModalForms() {
+            createDentistModalForm();
+            readDentistModalForm();
+            updateDentistModalForm();
+            deleteDentistModalForm();
+          }
+
+          
+
+          // Hide message
+          $(".alert").fadeTo(2000, 500).slideUp(500, function () {
+              $(".alert").slideUp(500);
+          });
+          
+  </script>
+  <!--<script>
+    // Write on keyup event of keyword input element
+    $(document).ready(function(){
+    $("#search").keyup(function(){
+    _this = this;
+    // Show only matching TR, hide rest of them
+    $.each($("#dentists-table tbody tr"), function() {
+    if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
+    $(this).hide();
+    else
+    $(this).show();
+    });
+    });
+   });
+   </script>--> 
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="/static/assets/js/jquery.chained.js"></script>
+ 
+  {% if messages %}
+ 
+     {% for m in messages %}
+        <script>
+          swal.fire({
+            "title":"Congratulations",
+            "text": "{{ m }}",
+            "icon": "Success"
+    
+          });
+        </script>
+      {% endfor %}
+   
+    {% endif %}    
+{% endblock extrascripts %}

@@ -1,0 +1,92 @@
+Para pasar el ID de un objeto Paciente de un formulario de paciente al formulario de citas en Django, puedes seguir los siguientes pasos:
+
+1. En el formulario de citas, agrega un campo oculto (`<input type="hidden">`) que contendrá el ID del paciente seleccionado.
+
+2. Cuando se renderice el formulario de citas, se debe pasar el ID del paciente como valor del campo oculto. Esto se puede hacer en la vista donde se procesa la solicitud del formulario de citas, obteniendo el ID del paciente de la solicitud que se envió desde el formulario de paciente.
+
+3. En la vista que procesa el formulario de citas, cuando se guarda la información de la cita, se debe obtener el ID del paciente del campo oculto y asignarlo al campo de paciente en el modelo de cita antes de guardar la cita.
+
+Aquí hay un ejemplo de cómo se podría implementar esto en código:
+
+En el formulario de citas, agregar el campo oculto:
+
+html
+<form method="post" action="{% url 'citas' %}">
+  {% csrf_token %}
+  <!-- Otros campos del formulario -->
+  <input type="hidden" name="paciente_id" value="{{ paciente.id }}">
+  <button type="submit">Guardar cita</button>
+</form>
+
+
+En la vista que procesa el formulario de citas, obtener el ID del paciente del campo oculto y asignarlo al campo de paciente en el modelo de cita antes de guardar la cita:
+
+python
+from django.shortcuts import render, redirect
+from .models import Cita
+from .forms import CitaForm
+
+def citas(request):
+    if request.method == 'POST':
+        form = CitaForm(request.POST)
+        if form.is_valid():
+            cita = form.save(commit=False)
+            cita.paciente_id = request.POST.get('paciente_id')
+            cita.save()
+            return redirect('citas')
+    else:
+        form = CitaForm()
+    return render(request, 'citas.html', {'form': form})
+
+Para implementar un modelo en Django para manejar turnos de clínicas con sus días y horarios disponibles, se podría utilizar un modelo llamado "Turno" con los siguientes campos:
+
+python
+from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+
+class Turno(models.Model):
+    dia = models.DateField()
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
+
+    def clean(self):
+        # Verificar que la hora de inicio sea anterior a la hora de fin.
+        if self.hora_inicio >= self.hora_fin:
+            raise ValidationError('La hora de inicio debe ser anterior a la hora de fin.')
+
+        # Verificar que la fecha sea futura.
+        if self.dia <= timezone.now().date():
+            raise ValidationError('La fecha debe ser en el futuro.')
+
+        # Verificar que el día de la semana sea uno de los días disponibles.
+        dias_disponibles = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+        if self.dia.strftime('%A') not in dias_disponibles:
+            raise ValidationError('No se aceptan turnos para este día.')
+
+        # Verificar que la hora de inicio y fin estén dentro de los horarios disponibles.
+        horarios_disponibles = {
+            'Lunes': ('08:00', '18:00'),
+            'Martes': ('08:00', '18:00'),
+            'Miércoles': ('08:00', '18:00'),
+            'Jueves': ('08:00', '18:00'),
+            'Viernes': ('08:00', '18:00'),
+            'Sábado': ('08:00', '13:00'),
+            'Domingo': ('cerrado', 'cerrado')
+        }
+        horario_inicio, horario_fin = horarios_disponibles[self.dia.strftime('%A')]
+        if horario_inicio == 'cerrado' or horario_fin == 'cerrado':
+            raise ValidationError('El consultorio está cerrado en este día.')
+        if not (self.hora_inicio >= timezone.datetime.strptime(horario_inicio, '%H:%M').time() and
+                self.hora_fin <= timezone.datetime.strptime(horario_fin, '%H:%M').time()):
+            raise ValidationError('El horario seleccionado no está disponible.')
+
+
+En este ejemplo, la función "clean()" se llama automáticamente cuando se llama a "save()" en el modelo. Dentro de esta función, se verifican las siguientes condiciones:
+
+- La hora de inicio debe ser anterior a la hora de fin.
+- La fecha debe ser futura.
+- El día de la semana debe estar dentro de los días disponibles.
+- La hora de inicio y fin deben estar dentro de los horarios disponibles para ese día de la semana.
+
+Si alguna de estas condiciones no se cumple, se lanza una excepción de validación. Tenga en cuenta que los horarios disponibles se definen en un diccionario con los horarios de inicio y fin para cada día de la semana. En este ejemplo, se asume que la clínica está cerrada los domingos. Además, se asume que los horarios de inicio y fin están en formato de 24 horas

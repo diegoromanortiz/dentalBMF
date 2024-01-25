@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  {% include "_modal.html" %}
+  <body>
+    <style>
+
+      body {
+          background-image: url('static/assets/img/AAA.jpeg'); /* Ruta de la imagen de fondo */
+          background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+          background-repeat: no-repeat; 
+          background-position: center; /* Centra la imagen en el fondo */
+    }
+    
+      </style> 
+
+        <div class="row">
+          <div class="col-12 mb-3">
+            {% if perms.DentalClinic.add_patient %}
+            <button id="create-clinic" class="contacto-nav" type="button" name="button">
+              <span class="fa fa-plus mr-2"></span>Clinic 
+            </button>
+            
+            {% endif %}
+        
+             {% include "_clinic_table.html" %}  
+          </body>
+         
+  
+ 
+  
+  
+  
+{% endblock content %}
+
+{% block extrascripts %}
+  <script type="text/javascript">
+    
+          function createClinicModalForm() {
+            $("#create-clinic").modalForm({
+                formURL: "{% url 'create_clinic' %}",
+                modalID: "#create-modal"
+            });
+          }
+          createClinicModalForm();
+          var PatientFemSuccessMessageUpdate = [
+            "<div ",
+            "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+            "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+            "Success: Patient was updated.",
+            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+            "<span aria-hidden='true'>&times;</span>",
+            "</button>",
+            "</div>",
+            "<script>",
+            "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+            "<\/script>"
+          ].join("");
+          
+          function updateClinicModalForm() {
+            $(".update-clinic").each(function () {
+              $(this).modalForm({
+                formURL: $(this).data("form-url"),
+                asyncUpdate: true,
+                asyncSettings: {
+                  closeOnSubmit: true,
+                  successMessage: PatientFemSuccessMessageUpdate,
+                  dataUrl: "clinic/",
+                  dataElementId: "#clinic-table",
+                  dataKey: "table",
+                  addModalFormFunction: reinstantiateModalForms
+                }
+              });
+            });
+          }
+          updateClinicModalForm();
+
+          function deleteClinicModalForm() {
+            $(".delete-clinic").each(function () {
+                $(this).modalForm({formURL: $(this).data("form-url"), isDeleteForm: true});
+            });
+          }
+          deleteClinicModalForm();
+
+          // Read book buttons
+          function readClinicModalForm() {
+            $(".read-clinic").each(function () {
+                $(this).modalForm({formURL: $(this).data("form-url")});
+            });
+          }
+          readClinicModalForm() ;
+
+          function reinstantiateModalForms() {
+            createClinicModalForm();
+            readClinicModalForm();
+            updateClinicModalForm();
+            deletePatientModalForm();
+          }
+
+          
+
+          // Hide message
+          $(".alert").fadeTo(2000, 500).slideUp(500, function () {
+              $(".alert").slideUp(500);
+          });
+          
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  {% if messages %}
+ 
+     {% for m in messages %}
+        <script>
+          swal.fire({
+            "title":"Congratulations",
+            "text": "{{ m }}",
+            "icon": "Success"
+    
+          });
+        </script>
+      {% endfor %}
+    
+    {% endif %} 
+{% endblock extrascripts %}

@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tz %}
+{% block content %}
+
+  {% include "_modal.html" %}
+  
+  <!--<div class="container mt-3">
+    <div class="row">
+      <div class="col">  
+        <div class="row">
+          <div class="col-12 mb-3">
+            <button id="signup-btn" class="btn btn-primary" type="button" name="button">Sign up</button>
+          </div>
+        </div>-->
+        <!--<div class="row">
+          <div class="col-12 mb-3">
+            {% if not user.is_anonymous %}
+              <span>
+                Your are logged in as
+                <strong>{{ user }}</strong>.
+              </span>
+              <a href="{% url 'logout' %}" id="logout-btn" class="boton-portada" role="button">Log out</a>
+            {% else %}
+              <button id="login-btn" class="boton-portada"type="button" name="button">Log in</button>
+            {% endif %}
+          </div>
+        </div>-->
+        
+<body >
+  
+  <section class="seccion-portada ubicacion-row">
+    <style>
+    
+    section {
+        background-image: url('static/assets/img/AAA.jpeg'); /* Ruta de la imagen de fondo */
+        background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+        background-repeat: no-repeat; 
+        background-position: center; /* Centra la imagen en el fondo */
+  }
+  
+    </style> 
+    <div class="descripcion-portada ubicacion-column">
+        <h2>
+            ¡Hola! <br/>
+            <strong class="titulo-principal">Quieres una mejor sonrisa</strong>
+        </h2>
+        <p class="parrafo-portada">
+          Especialistas en implantes dentales,blanqueamiento,limpieza bucal.
+        </p>
+        <a href="#proyectos" class="tab-portada">
+          <button id="create-patient-fem" class="contacto-nav" type="button" name="button" >
+            <span class="fa fa-plus mr-2"></span>Create Patient
+          </button>
+        </a>
+    </div>
+    <figure class=" ubicacion-row contenedor-imagen"> 
+        <img src="{% static 'assets/img/dientes.jpeg'%}" alt="imagen portada" class="img-principal">
+    </figure>
+</section>
+        <div class="row">
+          
+          <div class="col-12 mb-3">
+          
+            <p>Welcome !! Are you patient? <a href="{% url 'IndexAppointment' %}">take your turn </a>
+             </p>
+      
+             <p>You already have your appointment<a href="{% url 'generar_pdf' %}">Generate your PDF</a>
+             </p>
+          {% if perms.DentalClinic.add_patient %}
+          <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <style>
+            body {
+              font-family: Arial;
+            }
+            
+            * {
+              box-sizing: border-box;
+            }
+            
+            form.example input[type=text] {
+              padding: 10px;
+              font-size: 17px;
+              border: 1px solid grey;
+              float: left;
+              width: 80%;
+              background: #f1f1f1;
+            }
+            
+            form.example button {
+              float: left;
+              width: 20%;
+              padding: 10px;
+              background: #2196F3;
+              color: white;
+              font-size: 17px;
+              border: 1px solid grey;
+              border-left: none;
+              cursor: pointer;
+            }
+            
+            form.example button:hover {
+              background: #0b7dda;
+            }
+            
+            form.example::after {
+              content: "";
+              clear: both;
+              display: table;
+            }
+            </style>
+            </head>
+          <form class="example" action="{% url 'search_results' %}"method="get"  style="margin:auto;max-width:300px">
+            <input type="text" name="q" placeholder="Search.." name="search2">
+            <button type="submit"><i class="fa fa-search"></i></button>
+          </form>
+          
+          
+        </div>
+          {% include "_patients_table.html" %}
+          <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+          
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+          
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+          </div>
+          {% endif %}
+          <CENTER><h3 class="titulo-secundario">
+            Nuestros conocimientos a tus problemas
+        </h3></CENTER>
+          <div class="contenedor-log-img">
+            <a href="" class="tarjeta-img">
+              
+                <img src="{% static 'assets/img/dientes.jpeg'%}"  alt="Imagen ilustrativa portfolio" class="img-proyecto">
+                <h4>Blanqueamiento de dientes</h4>
+            </a>
+            <a href="" class="tarjeta-img">
+                <img src="{% static 'assets/img/cg.jpeg'%}" alt="Imagen ilustrativa generador memes" class="img-proyecto">
+                <h4>Consultas generales</h4>
+            </a>
+            <a href="" class="tarjeta-img">
+                <img src="{% static 'assets/img/aa.jpeg'%}" alt="Imagen ilustrativa match 3" class="img-proyecto">
+                <h4>Tirantes</h4>
+            </a>
+            <a href="" class="tarjeta-img">
+                <img src="{% static 'assets/img/fondo.jpeg' %}" alt="Imagen ilustrativa control de gastos" class="img-proyecto">
+                <h4>Extracciones</h4>
+            </a>
+            <a href="" class="tarjeta-img">
+                <img src="{% static 'assets/img/DEN.jpeg' %}" alt="Imagen ilustrativa reuniones" class="img-proyecto">
+                <h4>Limpieza bucal</h4>
+            </a>
+            <a href="" class="tarjeta-img">
+                <img src="{% static 'assets/img/dental.jpeg' %}"  alt="Imagen ilustrativa todo app" class="img-proyecto">
+                <h4>Coronas</h4>
+            </a>
+           
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body> 
+ 
+{% endblock content %}
+
+{% block extrascripts %}
+  <script type="text/javascript">
+      $(function () {
+          // Login
+          $("#login-btn").modalForm({
+            formURL: "{% url 'login' %}"
+          });
+          
+          //  Signup
+          $("#signup-btn").modalForm({
+            formURL: "{% url 'signup' %}"
+          });
+
+          // Create client - Feminine
+          function createPatientFemModalForm() {
+            $("#create-patient-fem").modalForm({
+                formURL: "{% url 'create_patient' %}",
+                modalID: "#create-modal"
+            });
+          }
+          createPatientFemModalForm();
+
+          // Create book asynchronous button
+          // message
+          var PatientFemSuccessMessageCreate = [
+            "<div ",
+            "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+            "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+            "Success: Patient was created.",
+            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+            "<span aria-hidden='true'>&times;</span>",
+            "</button>",
+            "</div>",
+            "<script>",
+            "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+            "<\/script>"
+          ].join("");
+
+          
+
+          // Update book asynchronous button
+          // message
+          var PatientFemSuccessMessageUpdate = [
+            "<div ",
+            "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+            "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+            "Success: Patient was updated.",
+            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+            "<span aria-hidden='true'>&times;</span>",
+            "</button>",
+            "</div>",
+            "<script>",
+            "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+            "<\/script>"
+          ].join("");
+          
+          // modal form
+          function updatePatientModalForm() {
+            $(".update-patient").each(function () {
+              $(this).modalForm({
+                formURL: $(this).data("form-url"),
+                asyncUpdate: true,
+                asyncSettings: {
+                  closeOnSubmit:true,
+                  successMessage: PatientFemSuccessMessageUpdate,
+                  dataUrl: "patients/",
+                  dataElementId: "#patients-table",
+                  dataKey: "table",
+                  addModalFormFunction: reinstantiateModalForms
+                }
+              });
+            });
+          }
+          updatePatientModalForm();
+
+          // Delete book buttons - formURL is retrieved from the data of the element
+          function deletePatientModalForm() {
+            $(".delete-patient").each(function () {
+                $(this).modalForm({formURL: $(this).data("form-url"), isDeleteForm: true});
+            });
+          }
+          deletePatientModalForm();
+
+          // Read book buttons
+          function readPatientModalForm() {
+            $(".read-patient").each(function () {
+                $(this).modalForm({formURL: $(this).data("form-url")});
+            });
+          }
+          readPatientModalForm() ;
+
+          function reinstantiateModalForms() {
+            createPatientFemModalForm();
+            readPatientModalForm();
+            updatePatientModalForm();
+            deletePatientModalForm();
+          }
+
+          
+
+          // Hide message
+          $(".alert").fadeTo(2000, 500).slideUp(500, function () {
+              $(".alert").slideUp(500);
+          });
+      });
+  </script>
+<!--<script>
+  // Write on keyup event of keyword input element
+  $(document).ready(function(){
+  $("#search").keyup(function(){
+  _this = this;
+  // Show only matching TR, hide rest of them
+  $.each($("#patients-table tbody tr"), function() {
+  if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
+  $(this).hide();
+  else
+  $(this).show();
+  });
+  });
+ });
+ </script>-->
+ <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ {% if messages %}
+
+    {% for m in messages %}
+       <script>
+         swal.fire({
+           "title":"Congratulations",
+           "text": "{{ m }}",
+           "icon": "Success"
+   
+         });
+       </script>
+     {% endfor %}
+   
+   {% endif %} 
+{% endblock extrascripts %}
