@@ -25,7 +25,7 @@ class AppointmentModelForm(BSModalModelForm):
             "date":DateTimePickerInput(options={"format": "DD/MM/YYYY HH:mm ",
                                                 "daysOfWeekDisabled":[0,6],
                                                 "stepping": [30,00],
-                                                "enabledHours": [ 8,9,10,11,12,16,17,18,19,20 ]},
+                                                "enabledHours": [ 8,9,10,11,12,15,16,17,18,19,20 ]},
                                        )
             
             }
